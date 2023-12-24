@@ -1,5 +1,7 @@
 package account.mgt.useraccountmanagment.controller;
 
+import account.mgt.useraccountmanagment.model.AccountVerification;
+import account.mgt.useraccountmanagment.model.EAccountStates;
 import account.mgt.useraccountmanagment.model.User;
 import account.mgt.useraccountmanagment.service.implementation.AccountVerificationServiceImpl;
 import account.mgt.useraccountmanagment.service.implementation.UserServiceImpl;
@@ -42,8 +44,13 @@ public class UserProfileController {
             LocalDate localDate = LocalDate.now();
             theUser.setAge(theUser.getDateOfBirth().getYear() - localDate.getYear());
             theUser.setPassword(encoder.encode(theUser.getPassword()));
+            theUser.setVerified(false);
             User user = userService.registerUser(theUser);
             if(user!=null){
+                AccountVerification verification = new AccountVerification();
+                verification.setUser(user);
+                verification.setStates(EAccountStates.UNVERIFIED);
+                AccountVerification theVerification = verificationService.submitInformation(verification);
                 return "redirect:/user/";
             }
         }catch (Exception ex){
@@ -73,6 +80,30 @@ public class UserProfileController {
             if(user!=null){
                 return "redirect:/user/";
             }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return "404";
+    }
+
+    @PostMapping("/additionData")
+    public String additionalPage(@RequestParam("id")Long id,Model model){
+        try {
+            AccountVerification verification = verificationService.searchAccount(new AccountVerification(id));
+            if(verification!=null){
+                model.addAttribute("verification",verification);
+                return "additionalInformation";
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return "404";
+    }
+
+    @PostMapping("/verification/addition")
+    public String additionalPage(@ModelAttribute("verification") AccountVerification verification){
+        try{
+
         }catch (Exception ex){
             ex.printStackTrace();
         }

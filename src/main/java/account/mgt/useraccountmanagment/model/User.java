@@ -27,6 +27,8 @@ public class User {
     private String password;
     private boolean active;
     private boolean verified;
+    @OneToOne(mappedBy = "user")
+    private AccountVerification verification;
 
     public User(Long id) {
         this.id = id;
