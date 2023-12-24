@@ -115,10 +115,12 @@ public class UserProfileController {
         try{
             if (!nidFile.isEmpty() || !passportDoc.isEmpty()){
                 verification.setStates(EAccountStates.PENDING_VERIFICATION);
+                verification.setNidDocumentName(nidFile.getOriginalFilename());
+                verification.setPassportNumber(passportDoc.getOriginalFilename());
                 AccountVerification theVerification = verificationService.submitInformation(verification);
                 if(theVerification!=null){
                     boolean isSaved = false;
-                    String uploadDir = "src/main/resources/static/"+theVerification.getId()+theVerification.getUser().getFirstName()+"_"+theVerification.getUser().getLastName();
+                    String uploadDir = "src/main/resources/static/user_document/"+theVerification.getId()+theVerification.getUser().getFirstName()+"_"+theVerification.getUser().getLastName();
                     Path uploadPath = Paths.get(uploadDir);
                     if(!Files.exists(uploadPath))
                         Files.createDirectories(uploadPath);
