@@ -6,6 +6,8 @@ import account.mgt.useraccountmanagment.service.AccountVerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AccountVerificationServiceImpl implements AccountVerificationService {
 
@@ -44,5 +46,20 @@ public class AccountVerificationServiceImpl implements AccountVerificationServic
     @Override
     public Boolean isVerified(AccountVerification verification) {
         return repo.isVerified(verification);
+    }
+
+    @Override
+    public List<AccountVerification> allAccount() {
+        return repo.findAll();
+    }
+
+    @Override
+    public AccountVerification searchAccount(AccountVerification accountVerification) {
+        return repo.findById(accountVerification.getId()).get();
+    }
+
+    @Override
+    public AccountVerification initializeInformation(AccountVerification verification) {
+        return repo.save(verification);
     }
 }

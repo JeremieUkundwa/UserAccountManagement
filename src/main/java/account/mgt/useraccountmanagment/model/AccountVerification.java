@@ -27,4 +27,12 @@ public class AccountVerification {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public AccountVerification(Long id, EAccountStates states) {
+        this.id = id;
+        this.states = states;
+    }
+
+    public AccountVerification(Long id) {
+        this.id = id;
+    }
 }

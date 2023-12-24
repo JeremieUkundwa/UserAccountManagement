@@ -21,12 +21,15 @@ public class User {
     private String lastName;
     private String gender;
     private Integer age;
+    @Column(name = "dob")
     private Date dateOfBirth;
     private EMaritalStatus status;
     private String nationality;
     private String password;
     private boolean active;
     private boolean verified;
+    @Column(name = "profile_picture")
+    private byte[] profilePicture;
     @OneToOne(mappedBy = "user")
     private AccountVerification verification;
 
