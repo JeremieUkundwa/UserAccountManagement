@@ -10,4 +10,6 @@ public interface UserService {
     User voidUser(User theUser);
     User searchById(User theUser);
     List<User> users();
+
+    User changePassword(User theUser);
 }

@@ -56,4 +56,14 @@ public class UserServiceImpl implements UserService {
     public List<User> users() {
         return repo.findAll();
     }
+
+    @Override
+    public User changePassword(User theUser) {
+        User user = searchById(theUser);
+        if(user!=null){
+            user.setPassword(theUser.getPassword());
+            return repo.save(user);
+        }
+        return null;
+    }
 }
