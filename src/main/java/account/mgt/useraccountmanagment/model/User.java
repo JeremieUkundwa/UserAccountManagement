@@ -32,6 +32,8 @@ public class User {
     private byte[] profilePicture;
     @OneToOne(mappedBy = "user")
     private AccountVerification verification;
+    @Column(name = "phone_number",unique = true)
+    private String phoneNumber;
 
     public User(Long id) {
         this.id = id;

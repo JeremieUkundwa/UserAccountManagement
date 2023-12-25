@@ -2,7 +2,9 @@ package account.mgt.useraccountmanagment.controller;
 
 import account.mgt.useraccountmanagment.model.AccountVerification;
 import account.mgt.useraccountmanagment.model.EAccountStates;
+import account.mgt.useraccountmanagment.model.User;
 import account.mgt.useraccountmanagment.service.implementation.AccountVerificationServiceImpl;
+import account.mgt.useraccountmanagment.service.implementation.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
@@ -17,9 +19,11 @@ import java.net.http.HttpResponse;
 @RequestMapping("/account")
 public class AccountVerificationController {
     private final AccountVerificationServiceImpl verificationService;
+    private final UserServiceImpl userService;
     @Autowired
-    public AccountVerificationController(AccountVerificationServiceImpl verificationService){
+    public AccountVerificationController(AccountVerificationServiceImpl verificationService, UserServiceImpl userService){
         this.verificationService=verificationService;
+        this.userService=userService;
     }
     @GetMapping({"/","","/home"})
     public String verificationPage(Model model){
@@ -38,6 +42,9 @@ public class AccountVerificationController {
         try{
             AccountVerification theVerification = verificationService.changeAccountState(new AccountVerification(id, EAccountStates.VERIFIED));
             if(theVerification!=null){
+                User theUser = theVerification.getUser();
+                theUser.setVerified(true);
+                theUser = userService.updateUser(theUser);
                 /**
                  * Inform User about validation of account using twillio
                  */

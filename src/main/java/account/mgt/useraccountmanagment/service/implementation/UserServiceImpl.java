@@ -32,6 +32,7 @@ public class UserServiceImpl implements UserService {
             user.setFirstName(theUser.getFirstName());
             user.setLastName(theUser.getLastName());
             user.setNationality(theUser.getNationality());
+            user.setVerified(theUser.isVerified());
             return repo.save(theUser);
         }
         return null;
