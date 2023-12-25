@@ -12,4 +12,8 @@ public interface UserService {
     List<User> users();
 
     User changePassword(User theUser);
+
+    User searchNonValidateUserByPhone(String username);
+
+    User validatedUser(User theUser);
 }

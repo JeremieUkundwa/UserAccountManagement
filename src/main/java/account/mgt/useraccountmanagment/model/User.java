@@ -3,9 +3,7 @@ package account.mgt.useraccountmanagment.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Generated;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Date;
 
@@ -36,7 +34,8 @@ public class User {
     private AccountVerification verification;
     @Column(name = "phone_number",unique = true)
     private String phoneNumber;
-
+    private boolean validated;
+    private Integer otp;
     public User(Long id) {
         this.id = id;
     }

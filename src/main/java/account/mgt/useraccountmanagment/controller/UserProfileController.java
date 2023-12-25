@@ -5,10 +5,10 @@ import account.mgt.useraccountmanagment.model.EAccountStates;
 import account.mgt.useraccountmanagment.model.EMaritalStatus;
 import account.mgt.useraccountmanagment.model.User;
 import account.mgt.useraccountmanagment.service.implementation.AccountVerificationServiceImpl;
+import account.mgt.useraccountmanagment.service.implementation.OTPServiceImpl;
 import account.mgt.useraccountmanagment.service.implementation.UserServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,18 +20,19 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Controller
 @RequestMapping("/user")
 public class UserProfileController {
 
     private final PasswordEncoder encoder;
+    private final OTPServiceImpl otpService;
     private final UserServiceImpl userService;
     private final AccountVerificationServiceImpl verificationService;
     @Autowired
-    public UserProfileController(PasswordEncoder encoder, UserServiceImpl userService, AccountVerificationServiceImpl verificationService) {
+    public UserProfileController(PasswordEncoder encoder, OTPServiceImpl otpService, UserServiceImpl userService, AccountVerificationServiceImpl verificationService) {
         this.encoder = encoder;
+        this.otpService = otpService;
         this.userService = userService;
         this.verificationService = verificationService;
     }
@@ -49,7 +50,7 @@ public class UserProfileController {
         return "registrationForm";
     }
     @PostMapping("/new")
-    public String registerUser(@ModelAttribute("user")User theUser, @RequestParam("profile") MultipartFile file){
+    public String registerUser(@ModelAttribute("user")User theUser, @RequestParam("profile") MultipartFile file,Model model){
         try{
             LocalDate localDate = LocalDate.now();
             theUser.setAge(localDate.getYear() - theUser.getDateOfBirth().getYear());
@@ -57,6 +58,7 @@ public class UserProfileController {
             theUser.setVerified(false);
             if(!file.isEmpty())
                 theUser.setProfilePicture(file.getBytes());
+            theUser.setOtp(otpService.generateOTP(theUser.getPhoneNumber()));
             User user = userService.registerUser(theUser);
             if(user!=null){
                 AccountVerification verification = new AccountVerification();
@@ -64,7 +66,17 @@ public class UserProfileController {
                 verification.setStates(EAccountStates.UNVERIFIED);
                 AccountVerification theVerification = verificationService.initializeInformation(verification);
                 if(theVerification!=null)
-                    return "redirect:/user/";
+                    model.addAttribute("username",theUser.getPhoneNumber());
+                    model.addAttribute("phone",theUser.getPhoneNumber());
+                    String message = "Hi User with"+theUser.getPhoneNumber()+"\n your Generated OTP is: "+theVerification.getUser().getOtp();
+                    SMSController smsService = new SMSController();
+                    String feedback = smsService.sendSMS(theUser.getPhoneNumber(),message);
+                    if(feedback.isEmpty()){
+                        return "404";
+                    }else{
+                        return "admin/accountValidated";
+                    }
+//                    return "redirect:/user/";
             }
         }catch (Exception ex){
             ex.printStackTrace();

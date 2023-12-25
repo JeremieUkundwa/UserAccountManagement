@@ -67,4 +67,19 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
+    @Override
+    public User searchNonValidateUserByPhone(String username) {
+        return repo.findNonValidateUser(username);
+    }
+
+    @Override
+    public User validatedUser(User theUser) {
+        User user = searchById(theUser);
+        if(user!=null){
+            user.setValidated(theUser.isValidated());
+            return repo.save(user);
+        }
+        return null;
+    }
 }
