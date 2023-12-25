@@ -1,14 +1,17 @@
 package account.mgt.useraccountmanagment.controller;
 
-import account.mgt.useraccountmanagment.model.AccountVerification;
-import account.mgt.useraccountmanagment.model.EAccountStates;
-import account.mgt.useraccountmanagment.model.EMaritalStatus;
-import account.mgt.useraccountmanagment.model.User;
+import account.mgt.useraccountmanagment.model.*;
+import account.mgt.useraccountmanagment.security.UserCustomDetails;
 import account.mgt.useraccountmanagment.service.implementation.AccountVerificationServiceImpl;
 import account.mgt.useraccountmanagment.service.implementation.OTPServiceImpl;
+import account.mgt.useraccountmanagment.service.implementation.RoleServiceImpl;
 import account.mgt.useraccountmanagment.service.implementation.UserServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,41 +27,83 @@ import java.time.LocalDate;
 @Controller
 @RequestMapping("/user")
 public class UserProfileController {
+//    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-    private final PasswordEncoder encoder;
+//    private final PasswordEncoder encoder;
     private final OTPServiceImpl otpService;
     private final UserServiceImpl userService;
     private final AccountVerificationServiceImpl verificationService;
+    private final RoleServiceImpl roleService;
+
     @Autowired
-    public UserProfileController(PasswordEncoder encoder, OTPServiceImpl otpService, UserServiceImpl userService, AccountVerificationServiceImpl verificationService) {
-        this.encoder = encoder;
+    public UserProfileController( OTPServiceImpl otpService, UserServiceImpl userService, AccountVerificationServiceImpl verificationService, RoleServiceImpl roleService) {
+
         this.otpService = otpService;
         this.userService = userService;
         this.verificationService = verificationService;
+        this.roleService = roleService;
     }
 
     @GetMapping({"","/","/home"})
     public String homePage(Model model){
-        model.addAttribute("users",userService.users());
-        return "index";
+        try{
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if(!(authentication instanceof AnonymousAuthenticationToken)){
+                UserCustomDetails userDetails = (UserCustomDetails)authentication.getPrincipal();
+                User theUser = userDetails.getUser();
+                theUser = userService.searchById(theUser);
+                if(theUser!=null){
+                    model.addAttribute("user",theUser);
+                    model.addAttribute("verification",theUser.getVerification());
+                    return "user-profile";
+                }
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return "404";
     }
 
-    @GetMapping("/new")
+//    @GetMapping("/login")
+//    public String loginPage(){
+//        try{
+//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//            if(authentication ==null || authentication instanceof AnonymousAuthenticationToken)
+//                return "auth-signin";
+//            else{
+//                UserCustomDetails userDetails = (UserCustomDetails) authentication.getPrincipal();
+//                User theUser = userDetails.getUser();
+//                if(theUser.getRole().getRoleName().equals("ADMIN"))
+//                    return "redirect:/account";
+//                else
+//                    return "redirect:/user/";
+//            }
+//        }catch (Exception ex){
+//            ex.printStackTrace();
+//        }
+//        return "404";
+//    }
+    @GetMapping("/signUp")
     public String registerUser(Model model){
         model.addAttribute("user",new User());
         model.addAttribute("status", EMaritalStatus.values());
-        return "registrationForm";
+        return "auth-signup";
     }
-    @PostMapping("/new")
+    @PostMapping("/signUp")
     public String registerUser(@ModelAttribute("user")User theUser, @RequestParam("profile") MultipartFile file,Model model){
         try{
             LocalDate localDate = LocalDate.now();
             theUser.setAge(localDate.getYear() - theUser.getDateOfBirth().getYear());
-            theUser.setPassword(encoder.encode(theUser.getPassword()));
+            theUser.setPassword(encoder().encode(theUser.getPassword()));
             theUser.setVerified(false);
             if(!file.isEmpty())
                 theUser.setProfilePicture(file.getBytes());
             theUser.setOtp(otpService.generateOTP(theUser.getPhoneNumber()));
+            Role theRole = roleService.searchRoleByName("NORMAL");
+            theUser.setRole(theRole);
             User user = userService.registerUser(theUser);
             if(user!=null){
                 AccountVerification verification = new AccountVerification();
@@ -74,7 +119,7 @@ public class UserProfileController {
                     if(feedback.isEmpty()){
                         return "404";
                     }else{
-                        return "admin/accountValidated";
+                        return "auth-2-step-verification";
                     }
 //                    return "redirect:/user/";
             }
@@ -121,7 +166,7 @@ public class UserProfileController {
     @PostMapping("/changePassword")
     public String changePassport(@ModelAttribute("user") User theUser){
         try{
-            theUser.setPassword(encoder.encode(theUser.getPassword()));
+            theUser.setPassword(encoder().encode(theUser.getPassword()));
             User user = userService.changePassword(theUser);
             if(user!=null){
                 return "redirect:/user/";
