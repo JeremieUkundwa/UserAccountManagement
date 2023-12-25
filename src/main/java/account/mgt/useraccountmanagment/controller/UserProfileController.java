@@ -67,6 +67,27 @@ public class UserProfileController {
         return "404";
     }
 
+    /**
+     * @implNote method to request user to provide phone used during signup and verify if he/she is owner and provide OTP
+     * sent after he will be redirected to reset password
+     * @return
+     */
+    public String checkRequestedResetPasswordUser(){
+        try{
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @param id
+     * @param model
+     * @return
+     */
+
     @PostMapping("/changePasswordRequest")
     public String changePasswordRequest(@RequestParam("id")Long id , Model model){
         try {
