@@ -18,7 +18,16 @@ public class AccountVerificationServiceImpl implements AccountVerificationServic
     }
     @Override
     public AccountVerification submitInformation(AccountVerification verification) {
-        return repo.save(verification);
+        AccountVerification theVerification = repo.findById(verification.getId()).get();
+        if(theVerification!=null){
+            theVerification.setNid(verification.getNid());
+            theVerification.setPassportNumber(verification.getPassportNumber());
+            theVerification.setStates(verification.getStates());
+            theVerification.setNidDocumentName(verification.getNidDocumentName());
+            theVerification.setPassportDocumentName(verification.getPassportDocumentName());
+            return repo.save(theVerification);
+        }
+        return null;
     }
 
     @Override
@@ -45,7 +54,7 @@ public class AccountVerificationServiceImpl implements AccountVerificationServic
 
     @Override
     public Boolean isVerified(AccountVerification verification) {
-        return repo.isVerified(verification);
+        return repo.isVerified(verification.getId());
     }
 
     @Override

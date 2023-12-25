@@ -8,7 +8,7 @@
 <div>
     <h1>User Profile</h1>
     <div>
-        <table>
+        <table border="2">
             <tr>
                 <th>Names</th>
                 <th>Phone Number</th>
@@ -20,7 +20,7 @@
                 <th>Action</th>
             </tr>
             <tr th:each="acc : ${accounts}">
-                <td th:text="${acc.user.firstName+acc.user.lastNamen}"></td>
+                <td th:text="${acc.user.firstName+acc.user.lastName}"></td>
                 <td th:text="${acc.user.gender}"></td>
                 <td th:text="${acc.user.nationality}"></td>
                 <td th:text="${acc.user.status}"></td>
@@ -32,7 +32,11 @@
                 </td>
                 <td th:text="${acc.states}"></td>
                 <td>
-                    <button>VERIFY</button>
+                    <form th:action="@{/account/verify}" method="post">
+                        <input th:hidden="true" th:value="${acc.id}" name="id">
+                        <button type="submit">VERIFY</button>
+                    </form>
+
                 </td>
             </tr>
         </table>

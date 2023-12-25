@@ -29,11 +29,15 @@
           <td th:text="${user.phoneNumber}"></td>
           <td th:text="${user.gender}"></td>
           <td th:text="${user.nationality}"></td>
+          <td th:text="${user.status}"></td>
           <td th:if="${user.verification.nid!=null}">
             <span th:text="${user.verification.nid}"></span>
           </td>
           <td th:if="${user.verification.passportNumber!=null}">
             <span th:text="${user.verification.passportNumber}"></span>
+          </td>
+          <td th:if="${user.verification.passportNumber==null && user.verification.nid==null}">
+            <span>--------</span>
           </td>
           <td th:text="${user.verification.states}"></td>
           <td>

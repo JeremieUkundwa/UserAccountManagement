@@ -5,8 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Generated;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Entity
 @Data
@@ -22,6 +23,7 @@ public class User {
     private String gender;
     private Integer age;
     @Column(name = "dob")
+//    @DateTimeFormat(pattern = "mm-dd-yyyy")
     private Date dateOfBirth;
     private EMaritalStatus status;
     private String nationality;

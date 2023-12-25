@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -20,6 +20,8 @@
             <input type="password" th:field="*{password}" required></br>
             <label>Gender</label>
             <input type="text" th:field="*{gender}" required></br>
+            <label>DOB</label>
+            <input type="date" th:field="*{dateOfBirth}" required></br>
             <label>Marital Status</label>
             <select th:field="*{status}">
                 <option th:each="sta : ${status}"
@@ -27,6 +29,7 @@
                         th:text="${sta}"
                 />
             </select><br/>
+
             <input type="file" name="profile" accept="image/*" required>
             <button type="submit">Register</button>
         </form>

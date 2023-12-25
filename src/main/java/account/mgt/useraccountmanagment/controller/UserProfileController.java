@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,15 +22,16 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Date;
 
-@RestController
+@Controller
 @RequestMapping("/user")
 public class UserProfileController {
 
-    private PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
     private final UserServiceImpl userService;
     private final AccountVerificationServiceImpl verificationService;
     @Autowired
-    public UserProfileController(UserServiceImpl userService, AccountVerificationServiceImpl verificationService) {
+    public UserProfileController(PasswordEncoder encoder, UserServiceImpl userService, AccountVerificationServiceImpl verificationService) {
+        this.encoder = encoder;
         this.userService = userService;
         this.verificationService = verificationService;
     }
@@ -50,7 +52,7 @@ public class UserProfileController {
     public String registerUser(@ModelAttribute("user")User theUser, @RequestParam("profile") MultipartFile file){
         try{
             LocalDate localDate = LocalDate.now();
-            theUser.setAge(theUser.getDateOfBirth().getYear() - localDate.getYear());
+            theUser.setAge(localDate.getYear() - theUser.getDateOfBirth().getYear());
             theUser.setPassword(encoder.encode(theUser.getPassword()));
             theUser.setVerified(false);
             if(!file.isEmpty())
