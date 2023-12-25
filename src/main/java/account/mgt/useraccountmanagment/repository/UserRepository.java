@@ -10,4 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User,Long> {
     @Query("select u from User u where u.validated=false and u.phoneNumber=:username")
     User findNonValidateUser(@Param("username") String username);
+
+    @Query("select u from User u where u.phoneNumber=:phone")
+    User findByPhoneNumber(@Param("phone") String phone);
 }

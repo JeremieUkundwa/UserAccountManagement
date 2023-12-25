@@ -36,7 +36,16 @@ public class User {
     private String phoneNumber;
     private boolean validated;
     private Integer otp;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
     public User(Long id) {
         this.id = id;
+    }
+
+    public boolean hasRole(String roleName) {
+        if(role.getRoleName().equals(roleName))
+            return true;
+        return false;
     }
 }
