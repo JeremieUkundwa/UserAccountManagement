@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <h1>User Profile</h1>
+    <div>
+        <table>
+            <tr>
+                <th>Names</th>
+                <th>Phone Number</th>
+                <th>Gender</th>
+                <th>Nationality</th>
+                <th>Marital Status</th>
+                <th>NID / Passport</th>
+                <th>States</th>
+                <th>Action</th>
+            </tr>
+            <tr th:each="acc : ${accounts}">
+                <td th:text="${acc.user.firstName+acc.user.lastNamen}"></td>
+                <td th:text="${acc.user.gender}"></td>
+                <td th:text="${acc.user.nationality}"></td>
+                <td th:text="${acc.user.status}"></td>
+                <td th:if="${acc.nid !=null}">
+                    <span th:text="${acc.nid}"></span>
+                </td>
+                <td th:if="${acc.passportNumber !=null}">
+                    <span th:text="${acc.passportNumber}"></span>
+                </td>
+                <td th:text="${acc.states}"></td>
+                <td>
+                    <button>VERIFY</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

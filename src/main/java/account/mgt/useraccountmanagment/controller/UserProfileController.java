@@ -2,9 +2,11 @@ package account.mgt.useraccountmanagment.controller;
 
 import account.mgt.useraccountmanagment.model.AccountVerification;
 import account.mgt.useraccountmanagment.model.EAccountStates;
+import account.mgt.useraccountmanagment.model.EMaritalStatus;
 import account.mgt.useraccountmanagment.model.User;
 import account.mgt.useraccountmanagment.service.implementation.AccountVerificationServiceImpl;
 import account.mgt.useraccountmanagment.service.implementation.UserServiceImpl;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,6 +43,7 @@ public class UserProfileController {
     @GetMapping("/new")
     public String registerUser(Model model){
         model.addAttribute("user",new User());
+        model.addAttribute("status", EMaritalStatus.values());
         return "registrationForm";
     }
     @PostMapping("/new")
@@ -173,5 +176,20 @@ public class UserProfileController {
             ex.printStackTrace();
         }
         return false;
+    }
+    @GetMapping("/image/display/{id}")
+    public void productImage(@PathVariable("id")Long id, HttpServletResponse response){
+        try{
+            User theUser = new User(id);
+            User userProfile = userService.searchById(theUser);
+            if(userProfile != null){
+                response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
+                response.getOutputStream().write(userProfile.getProfilePicture());
+                response.getOutputStream().close();
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+
     }
 }

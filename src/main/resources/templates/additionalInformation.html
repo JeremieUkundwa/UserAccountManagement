@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Additional Information</h1>
+    <form th:action="@{/user/verification/addition}" method="post" th:object="${verification}" enctype="multipart/form-data">
+        <label>NID </label>
+        <input type="text" th:field="*{nid}"> <br/>
+        <label>Passport </label>
+        <input type="text" th:field="*{passportNumber}"> <br/>
+        <label>NID FILE </label>
+        <input type="file" name="nid_document"> <br/>
+        <label>Passport FILE </label>
+        <input type="file" name="passportDoc"> <br/>
+        <input th:field="*{id}" th:hidden="true">
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

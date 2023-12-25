@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--  Add Authenticated User block after-->
+  <div>
+    <div>
+      <h1>Addition Links</h1>
+      <a th:href="@{/user/new}">Add New User</a>
+    </div>
+    <h1>User Profile</h1>
+    <div>
+      <table border="2">
+        <tr>
+          <th>Names</th>
+          <th>Phone Number</th>
+          <th>Gender</th>
+          <th>Nationality</th>
+          <th>Marital Status</th>
+          <th>NID / Passport</th>
+          <th>States</th>
+          <th>Action</th>
+        </tr>
+        <tr th:each="user : ${users}">
+          <td th:text="${user.firstName+user.lastName}"></td>
+          <td th:text="${user.phoneNumber}"></td>
+          <td th:text="${user.gender}"></td>
+          <td th:text="${user.nationality}"></td>
+          <td th:if="${user.verification.nid!=null}">
+            <span th:text="${user.verification.nid}"></span>
+          </td>
+          <td th:if="${user.verification.passportNumber!=null}">
+            <span th:text="${user.verification.passportNumber}"></span>
+          </td>
+          <td th:text="${user.verification.states}"></td>
+          <td>
+            <form th:action="@{/user/additionData}" method="post">
+              <input th:hidden="true" name="id" th:value="${user.verification.id}">
+              <button type="submit">Add Extra Information</button>
+            </form>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

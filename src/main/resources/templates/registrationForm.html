@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <h1>New User Information</h1>
+        <form th:action="@{/user/new}" method="post" th:object="${user}" enctype="multipart/form-data">
+            <label>Firstname</label>
+            <input type="text" th:field="*{firstName}" required></br>
+            <label>Lastname</label>
+            <input type="text" th:field="*{lastName}" required></br>
+            <label>PhoneNumber</label>
+            <input type="text" th:field="*{phoneNumber}" required></br>
+            <label>Nationality</label>
+            <input type="text" th:field="*{nationality}" required></br>
+            <label>Password</label>
+            <input type="password" th:field="*{password}" required></br>
+            <label>Gender</label>
+            <input type="text" th:field="*{gender}" required></br>
+            <label>Marital Status</label>
+            <select th:field="*{status}">
+                <option th:each="sta : ${status}"
+                        th:value="${sta}"
+                        th:text="${sta}"
+                />
+            </select><br/>
+            <input type="file" name="profile" accept="image/*" required>
+            <button type="submit">Register</button>
+        </form>
+    </div>
+</body>
+</html>

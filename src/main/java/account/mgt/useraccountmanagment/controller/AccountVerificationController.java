@@ -10,12 +10,13 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpResponse;
 
-@RestController
+@Controller
 @RequestMapping("/account")
 public class AccountVerificationController {
     private final AccountVerificationServiceImpl verificationService;
@@ -28,9 +29,9 @@ public class AccountVerificationController {
     @GetMapping({"/","","/home"})
     public String verificationPage(Model model){
         try{
-            model.addAttribute("account",verificationService.allAccount());
+            model.addAttribute("accounts",verificationService.allAccount());
 //            model.addAttribute("");
-            return "accountVerificationPage";
+            return "admin/accountVerificationPage";
         }catch (Exception ex){
             ex.printStackTrace();
         }
