@@ -33,7 +33,6 @@
                 <td th:text="${acc.states}"></td>
                 <td>
                     <form th:action="@{/account/verify}" method="post">
-                        <input th:hidden="true" th:value="${acc.id}" name="id">
                         <button type="submit">VERIFY</button>
                     </form>
 

@@ -45,9 +45,6 @@
           <img th:src="@{/src/assets/img/logo2.svg}" class="navbar-logo" alt="logo">
         </a>
       </li>
-      <li class="nav-item theme-text">
-        <a href="index.html" class="nav-link"> CORK </a>
-      </li>
     </ul>
 
     <ul class="navbar-item flex-row ms-lg-auto ms-0 action-area">
@@ -226,6 +223,7 @@
                         <th><div class="th-content">Nationality</div></th>
                         <th><div class="th-content">Marital Status</div></th>
                         <th><div class="th-content">NID / Passport </div></th>
+                        <th><div class="th-content">NID / Passport Document </div></th>
                         <th><div class="th-content">States</div></th>
                         <th><div class="th-content">Action</div></th>
                       </tr>
@@ -237,14 +235,26 @@
                         <td><div class="td-content " th:text="${acc.user.gender}"></div></td>
                         <td><div class="td-content "><span th:text="${acc.user.nationality}"></span></div></td>
                         <td><div class="td-content " th:text="${acc.user.status}"></div></td>
-                        <td><div class="td-content ">
-                          <span th:if="${acc.nid != null}">
-                            <span th:text="${acc.nid}"></span>
-                          </span>
-                          <span th:if="${acc.passportNumber !=null}">
-                            <span th:text="${acc.passportNumber}"></span>
-                          </span>
-                        </div></td>
+                        <td>
+                          <div class="td-content ">
+                            <span th:if="${acc.nid != null}">
+                              <span th:text="${acc.nid}"></span>
+                            </span>
+                            <span th:if="${acc.passportNumber !=null}">
+                              <span th:text="${acc.passportNumber}"></span>
+                            </span>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="td-content ">
+                            <span th:if="${acc.nid != null}">
+                              <a th:href="@{${'/account/user/document/nid/'+ acc.id}}" target="_blank" class="badge badge-primary">View Document</a>
+                            </span>
+                            <span th:if="${acc.passportNumber !=null}">
+                              <a th:href="@{${'/account/user/document/passport/'+ acc.id}}" target="_blank" class="badge badge-primary">View Document</a>
+                            </span>
+                          </div>
+                        </td>
                         <td>
                           <div class="td-content" th:if="${acc.states == T(account.mgt.useraccountmanagment.model.EAccountStates).VERIFIED}">
                             <span class="text-success" th:text="${acc.states}"></span>
@@ -258,7 +268,11 @@
                         </td>
                         <td>
                           <div class="td-content">
-                            <span class="badge badge-primary">VERIFY</span>
+                            <form th:action="@{/account/verify}" method="post">
+                              <input th:hidden="true" th:value="${acc.id}" name="id">
+                              <button type="submit" class="badge badge-primary">VERIFY</button>
+                            </form>
+
                           </div>
                         </td>
                       </tr>

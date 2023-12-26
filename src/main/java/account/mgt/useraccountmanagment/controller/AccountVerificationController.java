@@ -6,8 +6,10 @@ import account.mgt.useraccountmanagment.model.User;
 import account.mgt.useraccountmanagment.security.UserCustomDetails;
 import account.mgt.useraccountmanagment.service.implementation.AccountVerificationServiceImpl;
 import account.mgt.useraccountmanagment.service.implementation.UserServiceImpl;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +20,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.http.HttpResponse;
 import java.util.List;
 
+@CrossOrigin("*")
 @Controller
 @RequestMapping("/account")
 public class AccountVerificationController {
@@ -71,12 +77,12 @@ public class AccountVerificationController {
 
     }
 
-    @GetMapping("/user/document/nid")
-    public ResponseEntity<FileSystemResource> getNidDocument(HttpResponse response, @RequestParam("id") Long id){
+    @GetMapping("/user/document/nid/{id}")
+    public ResponseEntity<FileSystemResource> getNidDocument(@PathVariable("id") Long id){
         try {
             AccountVerification verification = verificationService.searchAccount(new AccountVerification(id));
             if(verification!=null){
-                FileSystemResource file = new FileSystemResource("src/main/resources/static/user_document/"+verification.getId()+"_"+verification.getUser().getFirstName()+"_"+verification.getUser().getLastName()+"/"+verification.getNidDocumentName());
+                FileSystemResource file = new FileSystemResource("src/main/resources/static/user_document/"+verification.getId()+verification.getUser().getFirstName()+"_"+verification.getUser().getLastName()+"/"+verification.getNidDocumentName());
                 HttpHeaders headers = new HttpHeaders();
                 headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + verification.getNidDocumentName());
                 headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
@@ -91,12 +97,12 @@ public class AccountVerificationController {
         }
         return null;
     }
-    @GetMapping("/user/document/passport")
-    public ResponseEntity<FileSystemResource> getPassportDocument(HttpResponse response, @RequestParam("id") Long id){
+    @GetMapping("/user/document/passport/{id}")
+    public ResponseEntity<FileSystemResource> getPassportDocument(HttpResponse response, @PathVariable("id") Long id){
         try {
             AccountVerification verification = verificationService.searchAccount(new AccountVerification(id));
             if(verification!=null){
-                FileSystemResource file = new FileSystemResource("src/main/resources/static/user_document/"+verification.getId()+"_"+verification.getUser().getFirstName()+"_"+verification.getUser().getLastName()+"/"+verification.getPassportDocumentName());
+                FileSystemResource file = new FileSystemResource("src/main/resources/static/user_document/"+verification.getId()+verification.getUser().getFirstName()+"_"+verification.getUser().getLastName()+"/"+verification.getPassportDocumentName());
                 HttpHeaders headers = new HttpHeaders();
                 headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + verification.getPassportDocumentName());
                 headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
@@ -111,4 +117,40 @@ public class AccountVerificationController {
         }
         return null;
     }
+
+//    @GetMapping("/user/document/nid/{id}")
+//    public ResponseEntity<InputStreamResource> getNidDocument(@PathVariable("id") Long id) {
+//        try {
+//            AccountVerification verification = verificationService.searchAccount(new AccountVerification(id));
+//            if (verification != null) {
+//                String filePath = "src/main/resources/static/user_document/"
+//                        + verification.getId() + verification.getUser().getFirstName() + "_"
+//                        + verification.getUser().getLastName() + "/" + verification.getNidDocumentName();
+//
+//                InputStream inputStream = new FileInputStream(filePath);
+//
+//                HttpHeaders headers = new HttpHeaders();
+//                headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=file.pdf");
+//
+//                headers.setContentType(MediaType.APPLICATION_PDF);
+//
+//                return ResponseEntity
+//                        .ok()
+//                        .headers(headers)
+//                        .body(new InputStreamResource(inputStream));
+//            }
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//            // Handle the exception, for example, return an error response
+//            return ResponseEntity
+//                    .status(500)
+//                    .body(null);
+//        }
+//
+//        // Return a 404 Not Found response if the verification is not found
+//        return ResponseEntity
+//                .notFound()
+//                .build();
+//    }
+
 }

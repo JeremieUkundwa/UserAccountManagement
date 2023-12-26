@@ -21,8 +21,10 @@ public class AccountVerificationServiceImpl implements AccountVerificationServic
     public AccountVerification submitInformation(AccountVerification verification) {
         AccountVerification theVerification = repo.findById(verification.getId()).get();
         if(theVerification!=null){
-            theVerification.setNid(verification.getNid());
-            theVerification.setPassportNumber(verification.getPassportNumber());
+            if(!verification.getNid().trim().isEmpty())
+                theVerification.setNid(verification.getNid());
+            if(!verification.getPassportNumber().trim().isEmpty())
+                theVerification.setPassportNumber(verification.getPassportNumber());
             theVerification.setStates(verification.getStates());
             theVerification.setNidDocumentName(verification.getNidDocumentName());
             theVerification.setPassportDocumentName(verification.getPassportDocumentName());
