@@ -3,6 +3,7 @@ package account.mgt.useraccountmanagment.service.implementation;
 import account.mgt.useraccountmanagment.model.AccountVerification;
 import account.mgt.useraccountmanagment.repository.AccountVerificationRepository;
 import account.mgt.useraccountmanagment.service.AccountVerificationService;
+import account.mgt.useraccountmanagment.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,4 +72,11 @@ public class AccountVerificationServiceImpl implements AccountVerificationServic
     public AccountVerification initializeInformation(AccountVerification verification) {
         return repo.save(verification);
     }
+
+    @Override
+    public List<AccountVerification> allNormalUserAccount() {
+        return repo.findAllNormalUser();
+    }
+
+
 }

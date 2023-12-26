@@ -67,25 +67,27 @@ public class UserProfileController {
         return "404";
     }
 
-//    @GetMapping("/login")
-//    public String loginPage(){
-//        try{
-//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//            if(authentication ==null || authentication instanceof AnonymousAuthenticationToken)
-//                return "auth-signin";
-//            else{
-//                UserCustomDetails userDetails = (UserCustomDetails) authentication.getPrincipal();
-//                User theUser = userDetails.getUser();
-//                if(theUser.getRole().getRoleName().equals("ADMIN"))
-//                    return "redirect:/account";
-//                else
-//                    return "redirect:/user/";
-//            }
-//        }catch (Exception ex){
-//            ex.printStackTrace();
-//        }
-//        return "404";
-//    }
+    @GetMapping("/login")
+    public String loginPage(){
+        try{
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if(authentication ==null || authentication instanceof AnonymousAuthenticationToken)
+                return "auth-signin";
+            else{
+                if(!(authentication instanceof AnonymousAuthenticationToken)) {
+                    UserCustomDetails userDetails = (UserCustomDetails) authentication.getPrincipal();
+                    User theUser = userDetails.getUser();
+                    if (theUser.getRole().getRoleName().equals("ADMIN"))
+                        return "redirect:/account";
+                    else
+                        return "redirect:/user/";
+                }
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return "404";
+    }
     @GetMapping("/signUp")
     public String registerUser(Model model){
         model.addAttribute("user",new User());

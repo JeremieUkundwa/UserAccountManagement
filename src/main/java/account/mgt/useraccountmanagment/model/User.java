@@ -26,7 +26,7 @@ public class User {
     private EMaritalStatus status;
     private String nationality;
     private String password;
-    private boolean active;
+    private boolean active=true;
     private boolean verified;
     @Column(name = "profile_picture")
     private byte[] profilePicture;

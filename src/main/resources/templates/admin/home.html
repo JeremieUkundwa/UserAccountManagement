@@ -58,10 +58,10 @@
         </a>
       </li>
       <li class="nav-item dropdown user-profile-dropdown  order-lg-0 order-1">
-        <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a href="" class="nav-link dropdown-toggle user" id="userProfileDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <div class="avatar-container">
             <div class="avatar avatar-sm avatar-indicators avatar-online">
-              <img alt="avatar" th:src="@{/src/assets/img/profile-30.png}" class="rounded-circle">
+              <img alt="avatar" th:src="@{${'/user/image/display/'+ user.id}}" class="rounded-circle">
             </div>
           </div>
         </a>
@@ -73,8 +73,7 @@
                 &#x1F44B;
               </div>
               <div class="media-body">
-                <h5>Shaun Park</h5>
-                <p>Project Leader</p>
+                <h5 th:text="${user.firstName+' '+user.lastName}"></h5>
               </div>
             </div>
           </div>
@@ -84,22 +83,11 @@
             </a>
           </div>
           <div class="dropdown-item">
-            <a href="app-mailbox.html">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-inbox"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg> <span>Inbox</span>
-            </a>
-          </div>
-          <div class="dropdown-item">
-            <a href="auth-boxed-lockscreen.html">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> <span>Lock Screen</span>
-            </a>
-          </div>
-          <div class="dropdown-item">
-            <a href="auth-boxed-signin.html">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> <span>Log Out</span>
+            <a th:href="@{/logout}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> Log Out
             </a>
           </div>
         </div>
-
       </li>
     </ul>
   </header>
@@ -220,69 +208,60 @@
         <!--  END BREADCRUMBS  -->
 
         <div class="row layout-top-spacing">
-          <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
             <div class="widget widget-table-two">
 
               <div class="widget-heading">
-                <h5 class="">Recent Orders</h5>
+                <h5 class="">User Account Verification</h5>
               </div>
 
               <div class="widget-content">
                 <div class="table-responsive">
                   <table class="table">
                     <thead>
-                    <tr>
-                      <th><div class="th-content">Customer</div></th>
-                      <th><div class="th-content">Product</div></th>
-                      <th><div class="th-content">Invoice</div></th>
-                      <th><div class="th-content th-heading">Price</div></th>
-                      <th><div class="th-content">Status</div></th>
-                    </tr>
+                      <tr>
+                        <th><div class="th-content">User</div></th>
+                        <th><div class="th-content">Phone Number</div></th>
+                        <th><div class="th-content">Gender</div></th>
+                        <th><div class="th-content">Nationality</div></th>
+                        <th><div class="th-content">Marital Status</div></th>
+                        <th><div class="th-content">NID / Passport </div></th>
+                        <th><div class="th-content">States</div></th>
+                        <th><div class="th-content">Action</div></th>
+                      </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                      <td><div class="td-content customer-name"><img th:src="@{/src/assets/img/profile-13.jpeg}" alt="avatar"><span>Luke Ivory</span></div></td>
-                      <td><div class="td-content product-brand text-primary">Headphone</div></td>
-                      <td><div class="td-content product-invoice">#46894</div></td>
-                      <td><div class="td-content pricing"><span class="">$56.07</span></div></td>
-                      <td><div class="td-content"><span class="badge badge-success">Paid</span></div></td>
-                    </tr>
-
-                    <tr>
-                      <td><div class="td-content customer-name"><img th:src="@{/src/assets/img/profile-7.jpeg}" alt="avatar"><span>Andy King</span></div></td>
-                      <td><div class="td-content product-brand text-warning">Nike Sport</div></td>
-                      <td><div class="td-content product-invoice">#76894</div></td>
-                      <td><div class="td-content pricing"><span class="">$88.00</span></div></td>
-                      <td><div class="td-content"><span class="badge badge-primary">Shipped</span></div></td>
-                    </tr>
-                    <tr>
-                      <td><div class="td-content customer-name"><img th:src="@{/src/assets/img/profile-10.jpeg}" alt="avatar"><span>Laurie Fox</span></div></td>
-                      <td><div class="td-content product-brand text-danger">Sunglasses</div></td>
-                      <td><div class="td-content product-invoice">#66894</div></td>
-                      <td><div class="td-content pricing"><span class="">$126.04</span></div></td>
-                      <td><div class="td-content"><span class="badge badge-success">Paid</span></div></td>
-                    </tr>
-                    <tr>
-                      <td><div class="td-content customer-name"><img th:src="@{/src/assets/img/profile-5.jpeg}" alt="avatar"><span>Ryan Collins</span></div></td>
-                      <td><div class="td-content product-brand text-warning">Sport</div></td>
-                      <td><div class="td-content product-invoice">#89891</div></td>
-                      <td><div class="td-content pricing"><span class="">$108.09</span></div></td>
-                      <td><div class="td-content"><span class="badge badge-primary">Shipped</span></div></td>
-                    </tr>
-                    <tr>
-                      <td><div class="td-content customer-name"><img th:src="@{/src/assets/img/profile-4.jpeg}" alt="avatar"><span>Irene Collins</span></div></td>
-                      <td><div class="td-content product-brand text-primary">Speakers</div></td>
-                      <td><div class="td-content product-invoice">#75844</div></td>
-                      <td><div class="td-content pricing"><span class="">$84.00</span></div></td>
-                      <td><div class="td-content"><span class="badge badge-danger">Pending</span></div></td>
-                    </tr>
-                    <tr>
-                      <td><div class="td-content customer-name"><img th:src="@{/src/assets/img/profile-11.jpeg}" alt="avatar"><span>Sonia Shaw</span></div></td>
-                      <td><div class="td-content product-brand text-danger">Watch</div></td>
-                      <td><div class="td-content product-invoice">#76844</div></td>
-                      <td><div class="td-content pricing"><span class="">$110.00</span></div></td>
-                      <td><div class="td-content"><span class="badge badge-success">Paid</span></div></td>
-                    </tr>
+                      <tr th:each="acc : ${accounts}">
+                        <td><div class="td-content customer-name"><img th:src="@{${'/user/image/display/'+ acc.user.id}}" alt="avatar"><span th:text="${acc.user.firstName + ' '+acc.user.lastName}">Luke Ivory</span></div></td>
+                        <td><div class="td-content " th:text="${acc.user.phoneNumber}"></div></td>
+                        <td><div class="td-content " th:text="${acc.user.gender}"></div></td>
+                        <td><div class="td-content "><span th:text="${acc.user.nationality}"></span></div></td>
+                        <td><div class="td-content " th:text="${acc.user.status}"></div></td>
+                        <td><div class="td-content ">
+                          <span th:if="${acc.nid != null}">
+                            <span th:text="${acc.nid}"></span>
+                          </span>
+                          <span th:if="${acc.passportNumber !=null}">
+                            <span th:text="${acc.passportNumber}"></span>
+                          </span>
+                        </div></td>
+                        <td>
+                          <div class="td-content" th:if="${acc.states == T(account.mgt.useraccountmanagment.model.EAccountStates).VERIFIED}">
+                            <span class="text-success" th:text="${acc.states}"></span>
+                          </div>
+                          <div class="td-content" th:if="${acc.states == T(account.mgt.useraccountmanagment.model.EAccountStates).PENDING_VERIFICATION}">
+                            <span class="text-warning" th:text="${acc.states}"></span>
+                          </div>
+                          <div class="td-content" th:if="${acc.states == T(account.mgt.useraccountmanagment.model.EAccountStates).UNVERIFIED}">
+                            <span class="text-danger" th:text="${acc.states}"></span>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="td-content">
+                            <span class="badge badge-primary">VERIFY</span>
+                          </div>
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -290,72 +269,70 @@
             </div>
           </div>
 
-          <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-            <div class="widget widget-table-three">
+<!--          <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">-->
+<!--            <div class="widget widget-table-three">-->
 
-              <div class="widget-heading">
-                <h5 class="">Top Selling Product</h5>
-              </div>
+<!--              <div class="widget-heading">-->
+<!--                <h5 class="">Top Selling Product</h5>-->
+<!--              </div>-->
 
-              <div class="widget-content">
-                <div class="table-responsive">
-                  <table class="table table-scroll">
-                    <thead>
-                    <tr>
-                      <th><div class="th-content">Product</div></th>
-                      <th><div class="th-content th-heading">Price</div></th>
-                      <th><div class="th-content th-heading">Discount</div></th>
-                      <th><div class="th-content">Sold</div></th>
-                      <th><div class="th-content">Source</div></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                      <td><div class="td-content product-name"><img th:src="@{/src/assets/img/product-headphones.jpg}" alt="product"><div class="align-self-center"><p class="prd-name">Headphone</p><p class="prd-category text-primary">Digital</p></div></div></td>
-                      <td><div class="td-content"><span class="pricing">$168.09</span></div></td>
-                      <td><div class="td-content"><span class="discount-pricing">$60.09</span></div></td>
-                      <td><div class="td-content">170</div></td>
-                      <td><div class="td-content"><a href="javascript:void(0);" class="text-danger"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-danger feather feather-chevrons-right"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg> Direct</a></div></td>
-                    </tr>
-                    <tr>
-                      <td><div class="td-content product-name"><img th:src="@{/src/assets/img/product-shoes.jpg}" alt="product"><div class="align-self-center"><p class="prd-name">Shoes</p><p class="prd-category text-warning">Faishon</p></div></div></td>
-                      <td><div class="td-content"><span class="pricing">$108.09</span></div></td>
-                      <td><div class="td-content"><span class="discount-pricing">$47.09</span></div></td>
-                      <td><div class="td-content">130</div></td>
-                      <td><div class="td-content"><a href="javascript:void(0);" class="text-primary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary feather feather-chevrons-right"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg> Google</a></div></td>
-                    </tr>
-                    <tr>
-                      <td><div class="td-content product-name"><img th:src="@{/src/assets/img/product-watch.jpg}" alt="product"><div class="align-self-center"><p class="prd-name">Watch</p><p class="prd-category text-danger">Accessories</p></div></div></td>
-                      <td><div class="td-content"><span class="pricing">$88.00</span></div></td>
-                      <td><div class="td-content"><span class="discount-pricing">$20.00</span></div></td>
-                      <td><div class="td-content">66</div></td>
-                      <td><div class="td-content"><a href="javascript:void(0);" class="text-warning"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-warning feather feather-chevrons-right"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg> Ads</a></div></td>
-                    </tr>
-                    <tr>
-                      <td><div class="td-content product-name"><img th:src="@{/src/assets/img/product-laptop.jpg}" alt="product"><div class="align-self-center"><p class="prd-name">Laptop</p><p class="prd-category text-primary">Digital</p></div></div></td>
-                      <td><div class="td-content"><span class="pricing">$110.00</span></div></td>
-                      <td><div class="td-content"><span class="discount-pricing">$33.00</span></div></td>
-                      <td><div class="td-content">35</div></td>
-                      <td><div class="td-content"><a href="javascript:void(0);" class="text-info"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-info feather feather-chevrons-right"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg> Email</a></div></td>
-                    </tr>
-                    <tr>
-                      <td><div class="td-content product-name"><img th:src="@{/src/assets/img/product-camera.jpg}" alt="product"><div class="align-self-center"><p class="prd-name">Camera</p><p class="prd-category text-primary">Digital</p></div></div></td>
-                      <td><div class="td-content"><span class="pricing">$126.04</span></div></td>
-                      <td><div class="td-content"><span class="discount-pricing">$26.04</span></div></td>
-                      <td><div class="td-content">30</div></td>
-                      <td><div class="td-content"><a href="javascript:void(0);" class="text-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary feather feather-chevrons-right"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg> Referral</a></div></td>
-                    </tr>
+<!--              <div class="widget-content">-->
+<!--                <div class="table-responsive">-->
+<!--                  <table class="table table-scroll">-->
+<!--                    <thead>-->
+<!--                    <tr>-->
+<!--                      <th><div class="th-content">Product</div></th>-->
+<!--                      <th><div class="th-content th-heading">Price</div></th>-->
+<!--                      <th><div class="th-content th-heading">Discount</div></th>-->
+<!--                      <th><div class="th-content">Sold</div></th>-->
+<!--                      <th><div class="th-content">Source</div></th>-->
+<!--                    </tr>-->
+<!--                    </thead>-->
+<!--                    <tbody>-->
+<!--                    <tr>-->
+<!--                      <td><div class="td-content product-name"><img th:src="@{/src/assets/img/product-headphones.jpg}" alt="product"><div class="align-self-center"><p class="prd-name">Headphone</p><p class="prd-category text-primary">Digital</p></div></div></td>-->
+<!--                      <td><div class="td-content"><span class="pricing">$168.09</span></div></td>-->
+<!--                      <td><div class="td-content"><span class="discount-pricing">$60.09</span></div></td>-->
+<!--                      <td><div class="td-content">170</div></td>-->
+<!--                      <td><div class="td-content"><a href="javascript:void(0);" class="text-danger"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-danger feather feather-chevrons-right"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg> Direct</a></div></td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                      <td><div class="td-content product-name"><img th:src="@{/src/assets/img/product-shoes.jpg}" alt="product"><div class="align-self-center"><p class="prd-name">Shoes</p><p class="prd-category text-warning">Faishon</p></div></div></td>-->
+<!--                      <td><div class="td-content"><span class="pricing">$108.09</span></div></td>-->
+<!--                      <td><div class="td-content"><span class="discount-pricing">$47.09</span></div></td>-->
+<!--                      <td><div class="td-content">130</div></td>-->
+<!--                      <td><div class="td-content"><a href="javascript:void(0);" class="text-primary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary feather feather-chevrons-right"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg> Google</a></div></td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                      <td><div class="td-content product-name"><img th:src="@{/src/assets/img/product-watch.jpg}" alt="product"><div class="align-self-center"><p class="prd-name">Watch</p><p class="prd-category text-danger">Accessories</p></div></div></td>-->
+<!--                      <td><div class="td-content"><span class="pricing">$88.00</span></div></td>-->
+<!--                      <td><div class="td-content"><span class="discount-pricing">$20.00</span></div></td>-->
+<!--                      <td><div class="td-content">66</div></td>-->
+<!--                      <td><div class="td-content"><a href="javascript:void(0);" class="text-warning"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-warning feather feather-chevrons-right"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg> Ads</a></div></td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                      <td><div class="td-content product-name"><img th:src="@{/src/assets/img/product-laptop.jpg}" alt="product"><div class="align-self-center"><p class="prd-name">Laptop</p><p class="prd-category text-primary">Digital</p></div></div></td>-->
+<!--                      <td><div class="td-content"><span class="pricing">$110.00</span></div></td>-->
+<!--                      <td><div class="td-content"><span class="discount-pricing">$33.00</span></div></td>-->
+<!--                      <td><div class="td-content">35</div></td>-->
+<!--                      <td><div class="td-content"><a href="javascript:void(0);" class="text-info"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-info feather feather-chevrons-right"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg> Email</a></div></td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                      <td><div class="td-content product-name"><img th:src="@{/src/assets/img/product-camera.jpg}" alt="product"><div class="align-self-center"><p class="prd-name">Camera</p><p class="prd-category text-primary">Digital</p></div></div></td>-->
+<!--                      <td><div class="td-content"><span class="pricing">$126.04</span></div></td>-->
+<!--                      <td><div class="td-content"><span class="discount-pricing">$26.04</span></div></td>-->
+<!--                      <td><div class="td-content">30</div></td>-->
+<!--                      <td><div class="td-content"><a href="javascript:void(0);" class="text-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary feather feather-chevrons-right"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg> Referral</a></div></td>-->
+<!--                    </tr>-->
 
 
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-
+<!--                    </tbody>-->
+<!--                  </table>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
         </div>
-
       </div>
 
     </div>

@@ -35,28 +35,28 @@ public class OTPController {
                         User userObj = userService.validatedUser(theUser);
                         if(userObj !=null){
                             System.out.println(SUCCESS);
-                            return "redirect:/login";
+                            return "redirect:/user/login";
                         }
                     }
                     else {
                         model.addAttribute("errorMessage",FAIL);
                         model.addAttribute("username",username);
-                        return "admin/accountValidated";
+                        return "auth-2-step-verification";
                     }
                 }else {
                     model.addAttribute("errorMessage",FAIL);
                     model.addAttribute("username",username);
-                    return "admin/accountValidated";
+                    return "auth-2-step-verification";
                 }
             }
 
         }else {
             model.addAttribute("errorMessage",FAIL);
             model.addAttribute("username",username);
-            return "admin/accountValidated";
+            return "auth-2-step-verification";
         }
         model.addAttribute("errorMessage",FAIL);
         model.addAttribute("username",username);
-        return "admin/accountValidated";
+        return "auth-2-step-verification";
     }
 }

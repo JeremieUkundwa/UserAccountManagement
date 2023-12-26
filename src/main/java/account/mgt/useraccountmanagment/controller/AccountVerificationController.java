@@ -3,6 +3,7 @@ package account.mgt.useraccountmanagment.controller;
 import account.mgt.useraccountmanagment.model.AccountVerification;
 import account.mgt.useraccountmanagment.model.EAccountStates;
 import account.mgt.useraccountmanagment.model.User;
+import account.mgt.useraccountmanagment.security.UserCustomDetails;
 import account.mgt.useraccountmanagment.service.implementation.AccountVerificationServiceImpl;
 import account.mgt.useraccountmanagment.service.implementation.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +11,15 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpResponse;
+import java.util.List;
 
 @Controller
 @RequestMapping("/account")
@@ -29,9 +34,17 @@ public class AccountVerificationController {
     @GetMapping({"/","","/home"})
     public String verificationPage(Model model){
         try{
-            model.addAttribute("accounts",verificationService.allAccount());
-//            model.addAttribute("");
-            return "admin/accountVerificationPage";
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if(!(authentication instanceof AnonymousAuthenticationToken)){
+                UserCustomDetails userDetails = (UserCustomDetails)authentication.getPrincipal();
+                User theUser = userDetails.getUser();
+                theUser = userService.searchById(theUser);
+                if(theUser!=null){
+                    model.addAttribute("accounts",verificationService.allNormalUserAccount());
+                    model.addAttribute("user",theUser);
+                    return "admin/home";
+                }
+            }
         }catch (Exception ex){
             ex.printStackTrace();
         }

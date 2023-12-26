@@ -15,4 +15,5 @@ public interface AccountVerificationService {
     AccountVerification searchAccount(AccountVerification accountVerification);
 
     AccountVerification initializeInformation(AccountVerification verification);
+    List<AccountVerification> allNormalUserAccount();
 }
