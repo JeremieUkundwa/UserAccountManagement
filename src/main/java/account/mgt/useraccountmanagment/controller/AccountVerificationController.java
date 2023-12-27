@@ -68,7 +68,15 @@ public class AccountVerificationController {
                 /**
                  * Inform User about validation of account using twillio
                  */
-                return "redirect:/account/";
+                String message = "Hi User with "+theUser.getPhoneNumber()+"\n your Account is Verified";
+                SMSController smsService = new SMSController();
+                String feedback = smsService.sendSMS(theUser.getPhoneNumber(),message);
+                if(feedback.isEmpty()){
+                    return "404";
+                }else{
+                    return "redirect:/account/";
+                }
+
             }
         }catch (Exception ex){
             ex.printStackTrace();
