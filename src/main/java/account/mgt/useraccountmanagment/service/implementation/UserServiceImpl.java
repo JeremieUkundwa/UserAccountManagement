@@ -82,4 +82,19 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
+    @Override
+    public User searchUserByPhone(String phoneNumber) {
+        return repo.findByPhoneNumber(phoneNumber);
+    }
+
+    @Override
+    public User updateOtpUser(User theUser) {
+        User user = searchById(theUser);
+        if(user !=null){
+            user.setOtp(theUser.getOtp());
+            return repo.save(user);
+        }
+        return null;
+    }
 }

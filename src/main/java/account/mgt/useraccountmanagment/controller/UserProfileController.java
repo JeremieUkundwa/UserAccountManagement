@@ -115,12 +115,13 @@ public class UserProfileController {
                 if(theVerification!=null)
                     model.addAttribute("username",theUser.getPhoneNumber());
                     model.addAttribute("phone",theUser.getPhoneNumber());
-                    String message = "Hi User with"+theUser.getPhoneNumber()+"\n your Generated OTP is: "+theVerification.getUser().getOtp();
+                    String message = "Hi User with "+theUser.getPhoneNumber()+"\n your Generated OTP is: "+theVerification.getUser().getOtp();
                     SMSController smsService = new SMSController();
                     String feedback = smsService.sendSMS(theUser.getPhoneNumber(),message);
                     if(feedback.isEmpty()){
                         return "404";
                     }else{
+                        model.addAttribute("login",true);
                         return "auth-2-step-verification";
                     }
 //                    return "redirect:/user/";
@@ -145,13 +146,42 @@ public class UserProfileController {
         return null;
     }
 
-    /**
-     *
-     * @param id
-     * @param model
-     * @return
-     */
+    @GetMapping("/resetPassword")
+    public String changePasswordPage(){
+        try{
+            return "auth-boxed-password-reset";
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
 
+    @PostMapping("/resetPassword")
+    public String validateRequestedResetPassword(@RequestParam("phone") String phoneNumber,Model model){
+        try{
+            User theUser = userService.searchUserByPhone(phoneNumber);
+            if(theUser!=null){
+                theUser.setOtp(otpService.generateOTP(theUser.getPhoneNumber()));
+                theUser = userService.updateOtpUser(theUser);
+                if(theUser!=null){
+                    model.addAttribute("username",theUser.getPhoneNumber());
+                    model.addAttribute("phone",theUser.getPhoneNumber());
+                    String message = "Hi User with "+theUser.getPhoneNumber()+"\n your Password Reset OTP is: "+theUser.getOtp();
+                    SMSController smsService = new SMSController();
+                    String feedback = smsService.sendSMS(theUser.getPhoneNumber(),message);
+                    if(feedback.isEmpty()){
+                        return "404";
+                    }else{
+                        model.addAttribute("reset",true);
+                        return "auth-2-step-verification";
+                    }
+                }
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
     @PostMapping("/changePasswordRequest")
     public String changePasswordRequest(@RequestParam("id")Long id , Model model){
         try {
@@ -171,7 +201,7 @@ public class UserProfileController {
             theUser.setPassword(encoder().encode(theUser.getPassword()));
             User user = userService.changePassword(theUser);
             if(user!=null){
-                return "redirect:/user/";
+                return "redirect:/user/login";
             }
         }catch (Exception ex){
             ex.printStackTrace();

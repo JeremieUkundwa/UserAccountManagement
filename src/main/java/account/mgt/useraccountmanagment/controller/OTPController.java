@@ -39,11 +39,13 @@ public class OTPController {
                         }
                     }
                     else {
+                        model.addAttribute("login",true);
                         model.addAttribute("errorMessage",FAIL);
                         model.addAttribute("username",username);
                         return "auth-2-step-verification";
                     }
                 }else {
+                    model.addAttribute("login",true);
                     model.addAttribute("errorMessage",FAIL);
                     model.addAttribute("username",username);
                     return "auth-2-step-verification";
@@ -51,10 +53,53 @@ public class OTPController {
             }
 
         }else {
+            model.addAttribute("login",true);
             model.addAttribute("errorMessage",FAIL);
             model.addAttribute("username",username);
             return "auth-2-step-verification";
         }
+        model.addAttribute("login",true);
+        model.addAttribute("errorMessage",FAIL);
+        model.addAttribute("username",username);
+        return "auth-2-step-verification";
+    }
+    @RequestMapping(value ="/validateResetOtp", method = RequestMethod.POST)
+    public String validateResetOtp(@RequestParam("otpnum") int otpnum, @RequestParam("username") String username, Model model){
+
+        final String SUCCESS = "Entered Otp is valid";
+        final String FAIL = "Entered Otp is NOT valid. Please Retry!";
+        //Validate the Otp
+        if(otpnum >= 0){
+            User theUser = userService.searchUserByPhone(username);
+            if(theUser!=null){
+                int serverOtp = theUser.getOtp();
+                if(serverOtp > 0){
+                    if(otpnum == serverOtp){
+                        System.out.println(SUCCESS);
+                        model.addAttribute("user",theUser);
+                        return "auth-reset-password";
+                    }
+                    else {
+                        model.addAttribute("reset",true);
+                        model.addAttribute("errorMessage",FAIL);
+                        model.addAttribute("username",username);
+                        return "auth-2-step-verification";
+                    }
+                }else {
+                    model.addAttribute("reset",true);
+                    model.addAttribute("errorMessage",FAIL);
+                    model.addAttribute("username",username);
+                    return "auth-2-step-verification";
+                }
+            }
+
+        }else {
+            model.addAttribute("reset",true);
+            model.addAttribute("errorMessage",FAIL);
+            model.addAttribute("username",username);
+            return "auth-2-step-verification";
+        }
+        model.addAttribute("reset",true);
         model.addAttribute("errorMessage",FAIL);
         model.addAttribute("username",username);
         return "auth-2-step-verification";

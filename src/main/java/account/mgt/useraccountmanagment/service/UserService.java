@@ -16,4 +16,8 @@ public interface UserService {
     User searchNonValidateUserByPhone(String username);
 
     User validatedUser(User theUser);
+
+    User searchUserByPhone(String phoneNumber);
+
+    User updateOtpUser(User theUser);
 }
