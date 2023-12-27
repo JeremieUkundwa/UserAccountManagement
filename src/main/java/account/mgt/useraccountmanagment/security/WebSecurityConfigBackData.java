@@ -1,5 +1,7 @@
-//package account.mgt.useraccountmanagment.security;
+package account.mgt.useraccountmanagment.security;//package account.mgt.useraccountmanagment.security;
 //
+//import account.mgt.useraccountmanagment.security.jwt.AuthEntryPointJwt;
+//import account.mgt.useraccountmanagment.security.jwt.AuthTokenFilter;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
@@ -15,7 +17,14 @@
 //
 //@Configuration
 //@EnableWebSecurity
-//public class WebSecurityConfigBack {
+//public class WebSecurityConfig {
+//    @Autowired
+//    private AuthEntryPointJwt unauthorizedHandler;
+//
+//    @Bean
+//    public AuthTokenFilter authenticationJwtTokenFilter() {
+//        return new AuthTokenFilter();
+//    }
 //    @Bean
 //    public PasswordEncoder passwordEncoder() {
 //        return new BCryptPasswordEncoder();
@@ -28,9 +37,6 @@
 //                                .requestMatchers("/src/**").permitAll()
 //                                .requestMatchers("/layouts/**").permitAll()
 //                                .requestMatchers("/validateOtp").permitAll()
-//                                .requestMatchers("/user/changePassword").permitAll()
-//                                .requestMatchers("/user/resetPassword").permitAll()
-//                                .requestMatchers("/validateResetOtp").permitAll()
 //                                .anyRequest().authenticated()
 ////                                .requestMatchers("/users").hasRole("ADMIN")
 //                ).formLogin(
