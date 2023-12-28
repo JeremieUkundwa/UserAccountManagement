@@ -254,9 +254,11 @@ public class UserProfileController {
                                  @RequestParam("passportDoc") MultipartFile passportDoc){
         try{
             if (!nidFile.isEmpty() || !passportDoc.isEmpty()){
+                if(nidFile !=null)
+                    verification.setNidDocumentName(nidFile.getOriginalFilename());
+                if(passportDoc !=null)
+                    verification.setPassportDocumentName(passportDoc.getOriginalFilename());
                 verification.setStates(EAccountStates.PENDING_VERIFICATION);
-                verification.setNidDocumentName(nidFile.getOriginalFilename());
-                verification.setPassportDocumentName(passportDoc.getOriginalFilename());
                 AccountVerification theVerification = verificationService.submitInformation(verification);
                 if(theVerification!=null){
                     boolean isSaved = false;
