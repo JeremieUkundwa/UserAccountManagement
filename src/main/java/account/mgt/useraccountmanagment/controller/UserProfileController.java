@@ -6,6 +6,7 @@ import account.mgt.useraccountmanagment.service.implementation.AccountVerificati
 import account.mgt.useraccountmanagment.service.implementation.OTPServiceImpl;
 import account.mgt.useraccountmanagment.service.implementation.RoleServiceImpl;
 import account.mgt.useraccountmanagment.service.implementation.UserServiceImpl;
+import account.mgt.useraccountmanagment.validation.UserValidation;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -15,6 +16,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import org.apache.commons.logging.*;
 
 @Controller
 @RequestMapping("/user")
@@ -37,6 +41,7 @@ public class UserProfileController {
     private final UserServiceImpl userService;
     private final AccountVerificationServiceImpl verificationService;
     private final RoleServiceImpl roleService;
+    private static final Log logger =LogFactory.getLog(UserValidation.class);
 
     @Autowired
     public UserProfileController( OTPServiceImpl otpService, UserServiceImpl userService, AccountVerificationServiceImpl verificationService, RoleServiceImpl roleService) {
@@ -95,8 +100,17 @@ public class UserProfileController {
         return "auth-signup";
     }
     @PostMapping("/signUp")
-    public String registerUser(@ModelAttribute("user")User theUser, @RequestParam("profile") MultipartFile file,Model model){
+    public String registerUser(@ModelAttribute("user")User theUser, @RequestParam("profile") MultipartFile file, Model model, BindingResult theBindingResult){
         try{
+            UserValidation validator = new UserValidation(userService);
+            validator.validate(theUser,theBindingResult);
+            if(theBindingResult.hasErrors()) {
+                FieldError fieldError = theBindingResult.getFieldError();
+                logger.debug("Code:" + fieldError.getCode() + ", field:"
+                        + fieldError.getField());
+                model.addAttribute("status", EMaritalStatus.values());
+                return "auth-signup";
+            }
             LocalDate localDate = LocalDate.now();
             theUser.setAge(localDate.getYear() - theUser.getDateOfBirth().getYear());
             theUser.setPassword(encoder().encode(theUser.getPassword()));

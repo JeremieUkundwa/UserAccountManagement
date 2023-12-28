@@ -20,4 +20,6 @@ public interface UserService {
     User searchUserByPhone(String phoneNumber);
 
     User updateOtpUser(User theUser);
+
+    boolean checkIfUserExist(User theUser);
 }
