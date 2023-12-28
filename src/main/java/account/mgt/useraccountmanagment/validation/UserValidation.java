@@ -13,7 +13,8 @@ import java.util.regex.Pattern;
 @Component
 public class UserValidation implements Validator {
     private final UserServiceImpl userService;
-    private static final String PASSWORD_REGEX = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$";
+//    private static final String PASSWORD_REGEX = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@#$%^&+=!])(?!.*\\s).{8,}$";
+    private static final String PASSWORD_REGEX = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@#$%^&+=!])(?!.*\\s).{8,}$";
 
     @Autowired
     public UserValidation(UserServiceImpl userService) {
@@ -30,7 +31,7 @@ public class UserValidation implements Validator {
         if(userService.checkIfUserExist(theUser))
             errors.rejectValue("phoneNumber","theUser.phoneNumber","phone number exists, log in!");
         if(!validatePassword(theUser.getPassword()))
-            errors.rejectValue("password","theUser.password","Password must be at least 8 characters long and contain at least one letter and one number.");
+            errors.rejectValue("password","theUser.password","Password must be at least 8 characters long and contain at least one letter , one number and one special character.");
 
     }
 

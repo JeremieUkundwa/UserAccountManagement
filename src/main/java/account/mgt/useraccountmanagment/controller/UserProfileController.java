@@ -210,8 +210,17 @@ public class UserProfileController {
         return "404";
     }
     @PostMapping("/changePassword")
-    public String changePassport(@ModelAttribute("user") User theUser){
+    public String changePassport(@ModelAttribute("user") User theUser,BindingResult theBindingResult,Model model){
         try{
+            UserValidation validator = new UserValidation(userService);
+            validator.validate(theUser,theBindingResult);
+            if(theBindingResult.hasErrors()) {
+                FieldError fieldError = theBindingResult.getFieldError();
+                logger.debug("Code:" + fieldError.getCode() + ", field:"
+                        + fieldError.getField());
+                model.addAttribute("user",theUser);
+                return "auth-signup";
+            }
             theUser.setPassword(encoder().encode(theUser.getPassword()));
             User user = userService.changePassword(theUser);
             if(user!=null){
