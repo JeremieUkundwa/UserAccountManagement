@@ -5,7 +5,9 @@ This repository contains a Spring MVC application showcasing key features and in
 **Prerequisites**
 
 Java Development Kit (JDK) 11 or later
+
 PostgreSQL database management system(DBMS) server running on port 5432
+
 Apache Maven
 
 **Setup Database**
@@ -15,8 +17,11 @@ Create a PostgreSQL database named irembo_user_account on port 5432.
 Update the application.properties file in the src/main/resources directory with your database credentials:
 
   _spring.datasource.url=jdbc:postgresql://localhost:5332/irembo_user_account
+  
   spring.datasource.username=your_username
+  
   spring.datasource.password=your_password_
+  
 
 **Change Port Number**
 
