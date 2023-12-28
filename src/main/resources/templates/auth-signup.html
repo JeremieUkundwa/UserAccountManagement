@@ -74,7 +74,7 @@
                 <div class="col-md-6">
                   <div class="mb-3">
                     <label class="form-label">Phone Number</label>
-                    <input type="text" th:field="*{phoneNumber}" class="form-control" required>
+                    <input type="text" th:field="*{phoneNumber}" class="form-control" oninput="validatePhoneNumber(this)" required>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -208,6 +208,18 @@
     }
     setMaxDate();
   });
+</script>
+<script>
+  function validatePhoneNumber(phoneInput) {
+    var phoneNumber = phoneInput.value.trim();
+
+    // Check if the phone number starts with "250"
+    if (!phoneNumber.startsWith("250")) {
+      phoneInput.setCustomValidity("Phone number must start with '250'");
+    } else {
+      phoneInput.setCustomValidity("");
+    }
+  }
 </script>
 
 <script th:src="@{/src/bootstrap/js/bootstrap.bundle.min.js}"></script>
