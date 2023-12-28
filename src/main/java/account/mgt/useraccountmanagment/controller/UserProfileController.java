@@ -26,6 +26,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.Date;
+
 import org.apache.commons.logging.*;
 
 @Controller
@@ -111,8 +113,8 @@ public class UserProfileController {
                 model.addAttribute("status", EMaritalStatus.values());
                 return "auth-signup";
             }
-            LocalDate localDate = LocalDate.now();
-            theUser.setAge(localDate.getYear() - theUser.getDateOfBirth().getYear());
+            Date toDay = new Date();
+            theUser.setAge(toDay.getYear() - theUser.getDateOfBirth().getYear());
             theUser.setPassword(encoder().encode(theUser.getPassword()));
             theUser.setVerified(false);
             if(!file.isEmpty())
@@ -254,7 +256,7 @@ public class UserProfileController {
             if (!nidFile.isEmpty() || !passportDoc.isEmpty()){
                 verification.setStates(EAccountStates.PENDING_VERIFICATION);
                 verification.setNidDocumentName(nidFile.getOriginalFilename());
-                verification.setPassportNumber(passportDoc.getOriginalFilename());
+                verification.setPassportDocumentName(passportDoc.getOriginalFilename());
                 AccountVerification theVerification = verificationService.submitInformation(verification);
                 if(theVerification!=null){
                     boolean isSaved = false;
